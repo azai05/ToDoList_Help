@@ -19,9 +19,9 @@ struct NewToDoView: View {
     @State var isImportant: Bool
     //Bind the ToDoItems array here
         //Delete the ToDoItems array binding in iteration 2
-    
+    @Binding  var toDoItems: [ToDoItem]
     //Bind the showNewTask property here
-    
+    @Binding var showNewTask : Bool
     var body: some View {
         VStack {
             //Add Text View containing "Task title" here
@@ -32,8 +32,10 @@ struct NewToDoView: View {
             
             //Add TextField here with the Text "Enter task description" and binded to the title state property (text: $title)
             TextField("Enter task description", text: $title)
+                .padding(.leading)
                 .frame(height: 50.0)
                 .border(Color.gray, width: 1)
+             
                 .padding()
             
             
@@ -49,7 +51,8 @@ struct NewToDoView: View {
             .padding()
             //Add Button here, delete any code in the action and with the text "Add"
             Button(action: {
-                
+                self.addTask(title: self.title, isImportant: self.isImportant)
+                self.showNewTask = false
             }) {
                 Text("Add")
             }
@@ -66,13 +69,18 @@ struct NewToDoView: View {
     }
     //Add the private function addTask here
         //In Iteration 2, update the function to save input to Core Data
+    private func addTask(title: String, isImportant: Bool = false) {
+            
+            let task = ToDoItem(title: title, isImportant: isImportant)
+            toDoItems.append(task)
+        }
 }
 
 struct NewToDoView_Previews: PreviewProvider {
     static var previews: some View {
         NewToDoView(//Add defaults for title (title: "") and isImportant (isImportant: false) here
             title: "" ,
-            isImportant: false
+            isImportant: false, toDoItems: .constant([]), showNewTask: .constant(true)
             //Add toDoItems: .constant([]) here (Iteration 1)
             //Add showNewTask: .constant(true) (Iteration 1)
             //Delete toDoItems: .constant([]) (Iteration 2_
